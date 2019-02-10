@@ -4,6 +4,7 @@ const fs = require('fs');
 const glob = require('glob');
 const request = require('request-promise-native');
 const prompt = require('prompt');
+const xmldoc = require('xmldoc');
 
 const PATH_TO_SEARCH = '../icons/';
 const SERVER = 'http://localhost:5000';
@@ -39,9 +40,14 @@ const uploadImages = async (username, password) => {
         };
 
         const resp = await request.post({ url: `${SERVER}/api/tokens`, form, json: true });
-        accessToken = resp['access_token'];
+        accessToken = resp['accessToken'];
     } catch (err) {
         console.error('Upload failed:', err);
+        return;
+    }
+
+    if (accessToken === undefined) {
+        console.error('Token is undefined.');
         return;
     }
 
@@ -53,11 +59,25 @@ const uploadImages = async (username, password) => {
 
         console.log(`Processing ${name}.`);
 
+        const svg_data = fs.readFileSync(image, 'utf8');
+        let doc = new xmldoc.XmlDocument(svg_data);
+        doc.children = doc.children.filter(el => el.name !== 'path' || 'fill' in el.attr);
+        for (let child of doc.children) {
+            if (child.name === 'path' && 'fill' in child.attr) {
+                child.attr['fill'] = '#000';
+            }
+        }
+
         try {
             const formData = {
                 global: 'true',
                 name,
-                image: fs.createReadStream(image),
+                image: {
+                    value: doc.toString({ compressed: true }),
+                    options: {
+                        filename: 'name' + '.svg',
+                    },
+                },
             };
 
             const headers = {

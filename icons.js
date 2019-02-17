@@ -90,7 +90,7 @@ const uploadImages = async (username, password, server) => {
                 Authorization: `Bearer ${accessToken}`,
             };
 
-            const resp = await request.post({ url: `${SERVER}/api/images`, headers, formData });
+            const resp = await request.post({ url: `${server}/api/images`, headers, formData });
             console.log(resp);
         } catch (err) {
             console.error('Upload failed:', err.statusCode);

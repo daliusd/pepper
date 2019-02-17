@@ -18,13 +18,14 @@
     "prompt": "^1.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "xmldoc": "^1.1.2"
+    "xmldoc": "^1.1.2",
+    "yargs": "^13.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.11.1",
     "eslint-plugin-jest": "^22.1.2",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "prettier": "^1.15.3"
   }
 }

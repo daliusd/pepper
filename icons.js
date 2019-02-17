@@ -9,6 +9,7 @@ const xmldoc = require('xmldoc');
 const PATH_TO_SEARCH = '../icons/';
 const SERVER = 'http://localhost:5000';
 
+prompt.override = require('yargs').argv;
 prompt.start();
 
 var schema = {
@@ -22,14 +23,19 @@ var schema = {
         password: {
             hidden: true,
         },
+        server: {
+            message: 'Server to upload icons to',
+            required: true,
+            default: SERVER,
+        },
     },
 };
 
 prompt.get(schema, function(err, result) {
-    uploadImages(result.name, result.password);
+    uploadImages(result.name, result.password, result.server);
 });
 
-const uploadImages = async (username, password) => {
+const uploadImages = async (username, password, server) => {
     const svgs = glob.sync(PATH_TO_SEARCH + '**/*.svg');
     let accessToken = null;
 
@@ -39,7 +45,7 @@ const uploadImages = async (username, password) => {
             password,
         };
 
-        const resp = await request.post({ url: `${SERVER}/api/tokens`, form, json: true });
+        const resp = await request.post({ url: `${server}/api/tokens`, form, json: true });
         accessToken = resp['accessToken'];
     } catch (err) {
         console.error('Upload failed:', err);

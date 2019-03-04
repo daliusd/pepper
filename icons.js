@@ -78,6 +78,7 @@ const uploadImages = async (username, password, server) => {
             const formData = {
                 global: 'true',
                 name,
+                metadata: JSON.stringify({ source: 'game-icons' }),
                 image: {
                     value: doc.toString({ compressed: true }),
                     options: {

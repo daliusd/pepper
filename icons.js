@@ -9,6 +9,37 @@ const xmldoc = require('xmldoc');
 const PATH_TO_SEARCH = '../icons/';
 const SERVER = 'http://localhost:5000';
 
+const folderToAuthor = {
+    lorc: 'Lorc, http://lorcblog.blogspot.com',
+    delapouite: 'Delapouite, http://delapouite.com',
+    'john-colburn': 'John Colburn, http://ninmunanmu.com',
+    felbrig: 'Felbrigg, http://blackdogofdoom.blogspot.co.uk',
+    'john-redman': 'John Redman, http://www.uniquedicetowers.com',
+    'carl-olsen': 'Carl Olsen, https://twitter.com/unstoppableCarl',
+    sbed: 'Sbed, http://opengameart.org/content/95-game-icons',
+    willdabeast: 'Willdabeast, http://wjbstories.blogspot.com',
+    'viscious-speed': 'Viscious Speed, http://viscious-speed.deviantart.com - CC0',
+    'lord-berandas': 'Lord Berandas, http://berandas.deviantart.com',
+    irongamer: 'Irongamer, http://ecesisllc.wix.com/home',
+    'heavenly-dog': 'HeavenlyDog, http://www.gnomosygoblins.blogspot.com',
+    lucasms: 'Lucas',
+    faithtoken: 'Faithtoken, http://fungustoken.deviantart.com',
+    skoll: 'Skoll',
+    andymeneely: 'Andy Meneely, http://www.se.rit.edu/~andy/',
+    cathelineau: 'Cathelineau',
+    'kier-heyl': 'Kier Heyl',
+    aussiesim: 'Aussiesim',
+    sparker: 'Sparker, http://citizenparker.com',
+    zeromancer: 'Zeromancer - CC0',
+    rihlsul: 'Rihlsul',
+    quoting: 'Quoting',
+    guard13007: 'Guard13007, https://guard13007.com',
+    darkzaitzev: 'DarkZaitzev, http://darkzaitzev.deviantart.com',
+    spencerdub: 'SpencerDub',
+    generalace135: 'GeneralAce135',
+    zajkonur: 'Zajkonur',
+};
+
 prompt.override = require('yargs').argv;
 prompt.start();
 
@@ -65,6 +96,13 @@ const uploadImages = async (username, password, server) => {
 
         console.log(`Processing ${name}.`);
 
+        let author = name.split(' ')[0];
+        let attribution = undefined;
+        if (author in folderToAuthor) {
+            attribution = folderToAuthor[author];
+            console.log(`Attribution ${attribution}`);
+        }
+
         const svg_data = fs.readFileSync(image, 'utf8');
         let doc = new xmldoc.XmlDocument(svg_data);
         doc.children = doc.children.filter(el => el.name !== 'path' || 'fill' in el.attr);
@@ -78,7 +116,7 @@ const uploadImages = async (username, password, server) => {
             const formData = {
                 global: 'true',
                 name,
-                metadata: JSON.stringify({ source: 'game-icons' }),
+                metadata: JSON.stringify({ source: 'game-icons', attribution }),
                 image: {
                     value: doc.toString({ compressed: true }),
                     options: {

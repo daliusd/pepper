@@ -13,7 +13,7 @@ const folderToAuthor = {
     lorc: 'Lorc, http://lorcblog.blogspot.com',
     delapouite: 'Delapouite, http://delapouite.com',
     'john-colburn': 'John Colburn, http://ninmunanmu.com',
-    felbrig: 'Felbrigg, http://blackdogofdoom.blogspot.co.uk',
+    felbrigg: 'Felbrigg, http://blackdogofdoom.blogspot.co.uk',
     'john-redman': 'John Redman, http://www.uniquedicetowers.com',
     'carl-olsen': 'Carl Olsen, https://twitter.com/unstoppableCarl',
     sbed: 'Sbed, http://opengameart.org/content/95-game-icons',
